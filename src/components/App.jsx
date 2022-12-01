@@ -2,6 +2,7 @@ import { Component } from 'react';
 // import { ToastContainer } from 'react-toastify';
 import { PokemonForm } from './PokemonForm/PokemonForm';
 import PokemonInfo from './PokemonInfo';
+import {PokemonContainer } from './App.styled'
 // import { Reader } from "./Reader/Reader";
 // import {VideoList} from "./VideoList/VideoList";
 // import videos from '../videos.json';
@@ -35,8 +36,10 @@ export class App extends Component {
 
         {/* <Reader items={publication} /> */}
 
-        <PokemonForm onSearch={this.handleSearchFormSubmit} />
+        <PokemonContainer >
+          <PokemonForm onSearch={this.handleSearchFormSubmit} />
         <PokemonInfo pokemonName={this.state.pokemonName} />
+        </PokemonContainer>
 
       </>
     );

@@ -3,6 +3,9 @@ import PokemonErrorView from 'components/PokemonErrorView';
 import PokemonCard from 'components/PokemonCard';
 import { Component } from 'react';
 import PokemonPendingView from 'components/PokemonPendingView';
+import {FetchPokemon} from '../services/pokemon-api'
+import { InputPokemonName } from './PokemonInfo.styled'
+
 
 export default class PokemonInfo extends Component {
   state = {
@@ -20,15 +23,10 @@ export default class PokemonInfo extends Component {
     //   console.log(prevProps.pokemonName);
     //   console.log(this.props.pokemonName);
       this.setState({ status: 'pending' });
-    setTimeout(()=>  fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
-          .then(res => {
-              if (res.ok) {
-                  return res.json();
-              }
-              return Promise.reject(new Error(`Покемона с именем ${nextName} не найдено`))
-        })
+   
+FetchPokemon(nextName)
           .then(pokemon => this.setState({ pokemon, status:'resolved' }))
-            .catch(error => this.setState({ error, status: 'rejected' })),3000)
+            .catch(error => this.setState({ error, status: 'rejected' }))
         
         
         // .finally(() => this.setState({ loading: false }));
@@ -41,7 +39,7 @@ export default class PokemonInfo extends Component {
       
 
       if (status === 'idle') {
-          return  <div>Введите имя Покемона</div>
+          return  <InputPokemonName>Введите имя Покемона</InputPokemonName>
       }
 
       if (status === 'pending') {
