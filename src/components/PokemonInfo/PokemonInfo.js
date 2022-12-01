@@ -1,6 +1,8 @@
 
 import PokemonErrorView from 'components/PokemonErrorView';
+import PokemonCard from 'components/PokemonCard';
 import { Component } from 'react';
+import PokemonPendingView from 'components/PokemonPendingView';
 
 export default class PokemonInfo extends Component {
   state = {
@@ -18,7 +20,7 @@ export default class PokemonInfo extends Component {
     //   console.log(prevProps.pokemonName);
     //   console.log(this.props.pokemonName);
       this.setState({ status: 'pending' });
-      fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
+    setTimeout(()=>  fetch(`https://pokeapi.co/api/v2/pokemon/${nextName}`)
           .then(res => {
               if (res.ok) {
                   return res.json();
@@ -26,7 +28,7 @@ export default class PokemonInfo extends Component {
               return Promise.reject(new Error(`Покемона с именем ${nextName} не найдено`))
         })
           .then(pokemon => this.setState({ pokemon, status:'resolved' }))
-            .catch(error => this.setState({ error, status: 'rejected' }))
+            .catch(error => this.setState({ error, status: 'rejected' })),3000)
         
         
         // .finally(() => this.setState({ loading: false }));
@@ -35,7 +37,7 @@ export default class PokemonInfo extends Component {
 
   render() {
     const { pokemon,error,status } = this.state;
-
+    const { pokemonName } = this.props;
       
 
       if (status === 'idle') {
@@ -43,7 +45,7 @@ export default class PokemonInfo extends Component {
       }
 
       if (status === 'pending') {
-          return <div>Загружаем...</div>
+          return <PokemonPendingView pockemonName={pokemonName} />
       }
 
       if (status === 'rejected') {
@@ -51,10 +53,7 @@ export default class PokemonInfo extends Component {
       }
 
       if (status === 'resolved') {
-          return  <div>
-                <p>{pokemon.name}</p>
-                <img src={pokemon.sprites.other['official-artwork'].front_default} alt={pokemon.name} width='250' />
-            </div>
+          return  <PokemonCard pokemon={pokemon}/>
       }
    
   }
